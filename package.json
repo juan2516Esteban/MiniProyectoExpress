@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "@libsql/client": "^0.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0"
+  },
+  "name": "miniproyectoexpress",
+  "version": "1.0.0",
+  "main": "Productos.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start:dev": "nodemon Productos.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
