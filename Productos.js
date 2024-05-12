@@ -4,6 +4,7 @@ const app = express();
 const { createClient } = require("@libsql/client");
 const cors = require('cors');
 
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -28,19 +29,21 @@ app.get('/Productos', async (req, res) => {
 });
 
 app.post('/Productos', async (req, res) => {
-  const value = await client.execute(` INSERT INTO Productos (id_productos, title, price, descripcion) VALUES ('${req.body.id_productos}' , '${req.body.title}', '${req.body.price}', '${req.body.description}'); `);
+  const value = await client.execute(` INSERT INTO Productos (title, price, description,categoria,images,CREATIONAT) VALUES ('${req.body.title}', '${req.body.price}', '${req.body.description}', '${req.body.categoria}' ,'${req.body.images}' , DATETIME() ); `);
   res.json({mesaje: "Producto creado"})
 });
 
 app.delete('/Productos/:id',async (req, res) => {
   const parametro = req.params.id;
+  
+  console.log(req.params)
   const value = await client.execute(` DELETE FROM Productos WHERE id_productos = ${parametro}; `);
   res.json({mensaje: "El producto ha sido eliminado"})
 });
 
 app.put('/Productos/:id', async (req, res) => {
   const parametro = req.params.id;
-  const value = await client.execute(` UPDATE Productos SET title = '${req.body.title}', price = ${req.body.price}, descripcion = '${req.body.description}' WHERE id_productos = ${parametro} ; `);
+  const value = await client.execute(` UPDATE Productos SET title = '${req.body.title}', price = ${req.body.price}, description = '${req.body.description}', categoria = '${req.body.categoria}', images = '${req.body.images}' WHERE id_productos = ${parametro} ; `);
   res.json({mensaje: "El producto ha sido actualizado"})
 });
 
