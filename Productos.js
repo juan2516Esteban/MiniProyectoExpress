@@ -5,7 +5,8 @@ const { createClient } = require("@libsql/client");
 const cors = require('cors');
 
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:4200' }));
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -24,12 +25,12 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/Productos', async (req, res) => {
-  const value = await client.execute('SELECT * FROM Productos');
+  const value = await client.execute('SELECT id_productos,title,price,description,C.DESCRIPCION AS categoria,images,CREATIONAT FROM Productos inner join CategoryProduct C on C.ID = CATEGORIA;');
   res.json(value.rows)
 });
 
 app.post('/Productos', async (req, res) => {
-  const value = await client.execute(` INSERT INTO Productos (title, price, description,categoria,images,CREATIONAT) VALUES ('${req.body.title}', '${req.body.price}', '${req.body.description}', '${req.body.categoria}' ,'${req.body.images}' , DATETIME() ); `);
+  const value = await client.execute(` INSERT INTO Productos (title, price, description,categoria,images,CREATIONAT) VALUES ('${req.body.title}', '${req.body.price}', '${req.body.description}', (SELECT id FROM CategoryProduct WHERE Descripcion = '${req.body.categoria}') ,'${req.body.images}' , DATETIME() ); `);
   res.json({mesaje: "Producto creado"})
 });
 
