@@ -44,7 +44,7 @@ app.delete('/Productos/:id',async (req, res) => {
 
 app.put('/Productos/:id', async (req, res) => {
   const parametro = req.params.id;
-  const value = await client.execute(` UPDATE Productos SET title = '${req.body.title}', price = ${req.body.price}, description = '${req.body.description}', categoria = '${req.body.categoria}', images = '${req.body.images}' WHERE id_productos = ${parametro} ; `);
+  const value = await client.execute(` UPDATE Productos SET title = '${req.body.title}', price = ${req.body.price}, description = '${req.body.description}', categoria = (SELECT id FROM CategoryProduct WHERE Descripcion = '${req.body.categoria}') , images = '${req.body.images}' WHERE id_productos = ${parametro} ; `);
   res.json({mensaje: "El producto ha sido actualizado"})
 });
 
